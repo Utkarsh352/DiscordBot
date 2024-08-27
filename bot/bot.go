@@ -3,6 +3,7 @@ package bot
 import (
 	"8dcb/config"
 	"log"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -34,13 +35,30 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == BotID {
 		return
 	}
-	if m.Content == "ping" {
+
+	// Keywords to check
+	keywords := []string{"work", "assignment", "task", "project"}
+
+	// Convert the message content to lowercase for case-insensitive comparison
+	messageContent := strings.ToLower(m.Content)
+
+	// Check if the message contains any of the keywords
+	for _, keyword := range keywords {
+		if strings.Contains(messageContent, keyword) {
+			s.ChannelMessageSend(m.ChannelID, "you can contact +919306588471")
+			return
+		}
+	}
+
+	// Existing responses
+	switch m.Content {
+	case "assignment":
 		s.ChannelMessageSend(m.ChannelID, "pong")
-	}
-	if m.Content == "hey" {
+	case "hey":
 		s.ChannelMessageSend(m.ChannelID, "hello")
-	}
-	if m.Content == "hru" {
+	case "hru":
 		s.ChannelMessageSend(m.ChannelID, "good u")
+	case "kya kr rhe ho":
+		s.ChannelMessageSend(m.ChannelID, "so rha hu")
 	}
 }
