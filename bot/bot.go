@@ -3,6 +3,7 @@ package bot
 import (
 	"8dcb/config"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -12,7 +13,13 @@ var BotID string
 var goBot *discordgo.Session
 
 func init() {
-	BotID = "791960000413941760"
+	// Retrieve the bot ID from the environment variable
+	BotID = os.Getenv("BOT_ID")
+
+	// Check if BotID is set
+	if BotID == "" {
+		log.Fatal("BOT_ID environment variable is not set")
+	}
 }
 
 func Start() {
